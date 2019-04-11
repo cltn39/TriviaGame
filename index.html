@@ -5,7 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script type="text/javascript" src="jquery-3.3.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.4.0.js"
+        integrity="sha256-DYZMCC8HTC+QDr5QNaIcfR7VSPtcISykd+6eSmBW5qo=" crossorigin="anonymous"></script>
+    <script src="assets/javascript/app.js"></script>
     <title>Trivia Game</title>
 </head>
 
@@ -15,53 +19,57 @@
     <button id="submit">Submit quiz</button>
     <div id="results"></div>
     <script>
+        //track where quiz go 
         var quizContainer = document.getElementById('quiz');
+        //track what result
         var resultsContainer = document.getElementById('results');
+        //track what sumit button do
         var submitBtn = document.getElementById('submit');
+        //track multiple questions
         var myQuestions = [
             {
                 question: "Question 1",
                 answers: {
-                    1: "Answer 1",
-                    2: "Answer 2",
-                    3: "Answer 3",
-                    4: "Answer 4"
+                    a: "Answer 1",
+                    b: "Answer 2",
+                    c: "Answer 3",
+                    d: "Answer 4"
                 },
-                correctAnser: "3"
+                correctAnswer: "a"
             },
             {
                 question: "Question 2",
                 answers: {
-                    1: "Answer 1",
-                    2: "Answer 2",
-                    3: "Answer 3",
-                    4: "Answer 4"
+                    a: "Answer 1",
+                    b: "Answer 2",
+                    c: "Answer 3",
+                    d: "Answer 4"
                 },
-                correctAnser: "4"
+                correctAnswer: "b"
             },
             {
                 question: "Question 3",
                 answers: {
-                    1: "Answer 1",
-                    2: "Answer 2",
-                    3: "Answer 3",
-                    4: "Answer 4"
+                    a: "Answer 1",
+                    b: "Answer 2",
+                    c: "Answer 3",
+                    d: "Answer 4"
                 },
-                correctAnser: "1"
+                correctAnswer: "c"
             },
             {
                 question: "Question 4",
                 answers: {
-                    1: "Answer 1",
-                    2: "Answer 2",
-                    3: "Answer 3",
-                    4: "Answer 4"
+                    a: "Answer 1",
+                    b: "Answer 2",
+                    c: "Answer 3",
+                    d: "Answer 4"
                 },
-                correctAnser: "2"
+                correctAnswer: "d"
             }
         ];
         function buildQuiz() {
-            // we'll need a place to store the HTML output
+            // track where output go to
             var output = [];
 
             // for each question...
@@ -77,10 +85,10 @@
                         // ...add an HTML radio button
                         answers.push(
                             `<label>
-            <input type="radio" name="question${questionNumber}" value="${letter}">
-            ${letter} :
-            ${currentQuestion.answers[letter]}
-          </label>`
+                            <input type="radio" name="question${questionNumber}" value="${letter}">
+                            ${letter} :
+                            ${currentQuestion.answers[letter]}
+                             </label>`
                         );
                     }
 
@@ -93,10 +101,43 @@
             );
 
             // finally combine our output list into one string of HTML and put it on the page
-            quizContainer.innerHTML = output.join('');
+            quizContainer.innerHTML = output.join("");
         }
 
-        function showResults() { }
+        function showResults() {
+
+            // track all the answers
+            var answerContainers = quizContainer.querySelectorAll(".answers");
+
+            // track my answers
+            let numCorrect = 0;
+
+            // for each question...
+            myQuestions.forEach((currentQuestion, questionNumber) => {
+
+                // find selected answer
+                var answerContainer = answerContainers[questionNumber];
+                var selector = 'input:checked';
+                var userAnswer = (answerContainer.querySelector(selector) || {}).value;
+
+                // if answer is correct
+                if (userAnswer === currentQuestion.correctAnswer) {
+                    // add to the number of correct answers
+                    numCorrect++;
+
+                    // color the answers green
+                    answerContainers[questionNumber].style.color = 'lightgreen';
+                }
+                // if answer is wrong or blank
+                else {
+                    // color the answers red
+                    answerContainers[questionNumber].style.color = 'red';
+                }
+            });
+
+            // print correct answers out of all questions
+            resultsContainer.innerHTML = numCorrect + " out of " + myQuestions.length;
+        }
 
         //display quiz right away
         buildQuiz();
