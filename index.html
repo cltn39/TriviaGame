@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script type="text/javascript" src="jquery-3.3.1.js"></script>
+    <title>Trivia Game</title>
+</head>
+
+
+<body>
+    <div id="quiz"></div>
+    <button id="submit">Submit quiz</button>
+    <div id="results"></div>
+    <script>
+        var quizContainer = document.getElementById('quiz');
+        var resultsContainer = document.getElementById('results');
+        var submitBtn = document.getElementById('submit');
+        var myQuestions = [
+            {
+                question: "Question 1",
+                answers: {
+                    1: "Answer 1",
+                    2: "Answer 2",
+                    3: "Answer 3",
+                    4: "Answer 4"
+                },
+                correctAnser: "3"
+            },
+            {
+                question: "Question 2",
+                answers: {
+                    1: "Answer 1",
+                    2: "Answer 2",
+                    3: "Answer 3",
+                    4: "Answer 4"
+                },
+                correctAnser: "4"
+            },
+            {
+                question: "Question 3",
+                answers: {
+                    1: "Answer 1",
+                    2: "Answer 2",
+                    3: "Answer 3",
+                    4: "Answer 4"
+                },
+                correctAnser: "1"
+            },
+            {
+                question: "Question 4",
+                answers: {
+                    1: "Answer 1",
+                    2: "Answer 2",
+                    3: "Answer 3",
+                    4: "Answer 4"
+                },
+                correctAnser: "2"
+            }
+        ];
+        function buildQuiz() {
+            // we'll need a place to store the HTML output
+            var output = [];
+
+            // for each question...
+            myQuestions.forEach(
+                (currentQuestion, questionNumber) => {
+
+                    // we'll want to store the list of answer choices
+                    var answers = [];
+
+                    // and for each available answer...
+                    for (letter in currentQuestion.answers) {
+
+                        // ...add an HTML radio button
+                        answers.push(
+                            `<label>
+            <input type="radio" name="question${questionNumber}" value="${letter}">
+            ${letter} :
+            ${currentQuestion.answers[letter]}
+          </label>`
+                        );
+                    }
+
+                    // add this question and its answers to the output
+                    output.push(
+                        `<div class="question"> ${currentQuestion.question} </div>
+        <div class="answers"> ${answers.join('')} </div>`
+                    );
+                }
+            );
+
+            // finally combine our output list into one string of HTML and put it on the page
+            quizContainer.innerHTML = output.join('');
+        }
+
+        function showResults() { }
+
+        //display quiz right away
+        buildQuiz();
+
+        //on submit, show results
+        submitBtn.addEventListener("click", showResults);
+    </script>
+
+</body>
+
+</html>
