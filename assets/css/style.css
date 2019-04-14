@@ -1,20 +1,25 @@
-@import url(https://fonts.googleapis.com/css?family=Work+Sans:300,600);
+@import url('https://fonts.googleapis.com/css?family=Dokdo|Slabo+27px');
 
 body{
-    font-size: 20px;
-    font-family: 'Work Sans', sans-serif;
-    color: #333;
+  font-size: 20px;
+  font-family: 'Slabo 27px', serif;
+  color: rgb(245, 236, 236);
   font-weight: 300;
   text-align: center;
-  background-color: #f8f6f0;
+  background: url("../images/questionmark.jpg") no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 h1{
   font-weight: 300;
+  font-family: 'Dokdo', cursive;
   margin: 0px;
   padding: 10px;
-  font-size: 20px;
-  background-color: rgb(19, 135, 170);
-  color: #fff;
+  font-size: 30px;
+  background-color: rgb(52, 19, 170);
+  color:white;
 }
 .question{
   font-size: 30px;
@@ -31,23 +36,18 @@ h1{
 }
 button{
   font-family: 'Work Sans', sans-serif;
-    font-size: 22px;
-    background-color: #279;
-    color: #fff;
-    border: 0px;
-    border-radius: 3px;
-    padding: 20px;
-    cursor: pointer;
-    margin-bottom: 20px;
+  font-size: 22px;
+  background-color: #279;
+  color: #fff;
+  border: 0px;
+  border-radius: 3px;
+  padding: 20px;
+  cursor: pointer;
+  margin-bottom: 20px;
 }
 button:hover{
-    background-color: #38a;
+  background-color: #38a;
 }
-
-
-
-
-
  .slide{
   position: absolute;
   left: 0px;
@@ -65,4 +65,8 @@ button:hover{
   position: relative;
   height: 200px;
   margin-top: 40px;
+}
+.question{
+  font-family: 'Dokdo', cursive;
+  font-size: 42px;
 }

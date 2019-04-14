@@ -1,6 +1,6 @@
-document.addEventListener('DOMContentLoaded', function () {
+
     //track timer
-    const timeInSeconds = 120;
+    var timeInSeconds = 60;
     const currentTime = Date.parse(new Date());
     const deadline = new Date(currentTime + timeInSeconds * 1000);
     //track what buttons do
@@ -55,15 +55,16 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     ];
 
+    
     function getTimeRemaining(timeEnd) {
         let t = Date.parse(timeEnd) - Date.parse(new Date());
+        console.log(t);
         const seconds = Math.floor((t / 1000));
         return {
             "total": t,
             "seconds": seconds
         };
     }
-
     function initTimer(id, timeEnd) {
         const clock = document.getElementById(id);
         const secondsSpan = clock.querySelector('.seconds');
@@ -101,33 +102,37 @@ document.addEventListener('DOMContentLoaded', function () {
             nextBtn.style.display = "inline-block";
             submitBtn.style.display = "none";
         }
+        console.log(currentSlide);
     }
 
     function buildQuiz() {
         // track where output go to
         const output = [];
-
+        
+        console.log(output);
+        
         // for each question
         myQuestions.map(
-            (currentQuestion, questionNumber) => {
+            (currentQuestion, questionIndex) => {
 
-                // we'll want to store the list of answer choices
+                // building answers array
                 const answers = [];
 
-                // and for each available answer...
+                // build each questions
                 for (letter in currentQuestion.answers) {
 
-                    // ...add an HTML radio button
+                    // add radio button
                     answers.push(
-                        `<label>
-                        <input type="radio" name="question${questionNumber}" value="${letter}">
+                        `
+                        <label>
+                        <input type="radio" name="question${questionIndex}" value="${letter}">
                         ${letter} :
                         ${currentQuestion.answers[letter]}
                          </label>`
                     );
                 }
 
-                // add this question and its answers to the output
+                // add question and answers to the output
                 output.push(
                     `<div class="slide">
                     <div class="question"> ${currentQuestion.question} </div>
@@ -137,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         );
 
-        // finally combine our output list into one string of HTML and put it on the page
+        //combine into a string
         quizContainer.innerHTML = output.join("");
     }
 
@@ -150,10 +155,10 @@ document.addEventListener('DOMContentLoaded', function () {
         let numCorrect = 0;
 
         // for each question...
-        myQuestions.map((currentQuestion, questionNumber) => {
+        myQuestions.map((currentQuestion, questionIndex) => {
 
             // find selected answer
-            const answerContainer = answerContainers[questionNumber];
+            const answerContainer = answerContainers[questionIndex];
             const selector = 'input:checked';
             const userAnswer = (answerContainer.querySelector(selector) || {}).value;
 
@@ -163,12 +168,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 numCorrect++;
 
                 // color the answers green
-                answerContainers[questionNumber].style.color = 'lightgreen';
+                answerContainers[questionIndex].style.color = 'lightgreen';
             }
             // if answer is wrong or blank
             else {
                 // color the answers red
-                answerContainers[questionNumber].style.color = 'red';
+                answerContainers[questionIndex].style.color = 'red';
             }
         });
 
@@ -178,12 +183,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function showNextSlide() {
         showSlide(currentSlide + 1);
+        setTimeout(showNextSlide, 15000);
     }
 
     function showPreviousSlide() {
         showSlide(currentSlide - 1);
     }
-
     //display quiz right away
     buildQuiz();
 
@@ -200,11 +205,11 @@ document.addEventListener('DOMContentLoaded', function () {
     nextBtn.addEventListener("click", showNextSlide);
     submitBtn.addEventListener("click", showResults);
     
-
     //display time remaining
-    getTimeRemaining(deadline).minutes;
+    getTimeRemaining(deadline).seconds;
 
-    console.log(getTimeRemaining(deadline));
+    console.log(getTimeRemaining(deadline).seconds);
 
     initTimer('timerdiv', deadline);
-}, false);
+
+    setTimeout(showNextSlide, 15000);
