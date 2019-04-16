@@ -1,8 +1,58 @@
-
-//track timer
-var timeInSeconds = 60;
-const currentTime = Date.parse(new Date());
-const deadline = new Date(currentTime + timeInSeconds * 1000);
+const myQuestions = [
+    {
+        question: "Are you ready for some Trivia Quiz?",
+        hint: "Press Start button to start",
+        timeLeft: 1
+    },
+    {
+        question: "Question 1",
+        hint: "answer is a",
+        answers: {
+            a: "Answer 1",
+            b: "Answer 2",
+            c: "Answer 3",
+            d: "Answer 4"
+        },
+        correctAnswer: "a",
+        timeLeft: 63
+    },
+    {
+        question: "Question 2",
+        hint: "answer is b",
+        answers: {
+            a: "Answer 1",
+            b: "Answer 2",
+            c: "Answer 3",
+            d: "Answer 4"
+        },
+        correctAnswer: "b",
+        timeLeft: 47
+    },
+    {
+        question: "Question 3",
+        hint: "answer is c",
+        answers: {
+            a: "Answer 1",
+            b: "Answer 2",
+            c: "Answer 3",
+            d: "Answer 4"
+        },
+        correctAnswer: "c",
+        timeLeft: 31
+    },
+    {
+        question: "Question 4",
+        hint: "answer is d",
+        answers: {
+            a: "Answer 1",
+            b: "Answer 2",
+            c: "Answer 3",
+            d: "Answer 4"
+        },
+        correctAnswer: "d",
+        timeLeft: 15
+    }
+];
 //track what buttons do
 const startBtn = document.getElementById("start")
 const submitBtn = document.getElementById("submit");
@@ -17,67 +67,12 @@ const timerContainer = document.getElementById("deadline")
 //track where instruction print
 const instructionContainer = document.getElementById("deadline")
 //track multiple quizzes
-const myQuestions = [
-    {
-        question: "Are you ready for some Trivia Quiz?",
-        hint: "Press Start button to start",
-        timeLeft: ""
-    },
-    {
-        question: "Question 1",
-        hint: "answer is a",
-        answers: {
-            a: "Answer 1",
-            b: "Answer 2",
-            c: "Answer 3",
-            d: "Answer 4"
-        },
-        correctAnswer: "a",
-        timeLeft: "15"
-    },
-    {
-        question: "Question 2",
-        hint: "answer is b",
-        answers: {
-            a: "Answer 1",
-            b: "Answer 2",
-            c: "Answer 3",
-            d: "Answer 4"
-        },
-        correctAnswer: "b",
-        timeLeft: "15"
-    },
-    {
-        question: "Question 3",
-        hint: "answer is c",
-        answers: {
-            a: "Answer 1",
-            b: "Answer 2",
-            c: "Answer 3",
-            d: "Answer 4"
-        },
-        correctAnswer: "c",
-        timeLeft: "15"
-    },
-    {
-        question: "Question 4",
-        hint: "answer is d",
-        answers: {
-            a: "Answer 1",
-            b: "Answer 2",
-            c: "Answer 3",
-            d: "Answer 4"
-        },
-        correctAnswer: "d",
-        timeLeft: "15"
-    }
-];
 
 
 function getTimeRemaining(timeEnd) {
     let t = Date.parse(timeEnd) - Date.parse(new Date());
-    console.log(t);
     const seconds = Math.floor((t / 1000));
+    console.log(t);
     return {
         "total": t,
         "seconds": seconds
@@ -106,7 +101,7 @@ function showSlide(n) {
     // show the new slide by adding the active-slide class
     slides[n].classList.add("active-slide");
     currentSlide = n;
-    
+
     if (currentSlide === 0) {
         previousBtn.style.display = "none";
         nextBtn.style.display = "none";
@@ -115,7 +110,7 @@ function showSlide(n) {
         nextBtn.style.display = "inline-block";
         startBtn.style.display = "none";
     }
-    
+
     if (currentSlide === slides.length - 1) {
         nextBtn.style.display = "none";
         submitBtn.style.display = "inline-block";
@@ -125,14 +120,7 @@ function showSlide(n) {
     console.log(currentSlide);
 }
 
-//display time remaining
-getTimeRemaining(deadline).seconds;
-initTimer('timerdiv', deadline);
-
 console.log(getTimeRemaining(deadline).seconds);
-
-
-setTimeout(showNextSlide, 15000);
 
 function buildQuiz() {
     // track where output go to
@@ -143,10 +131,14 @@ function buildQuiz() {
     // for each question
     myQuestions.map(
         (currentQuestion, questionIndex) => {
-
+            console.log(currentQuestion);
+            console.log(questionIndex);
             // building answers array
             const answers = [];
             //building timer
+            let timeInSeconds = currentQuestion.timeLeft;
+            const currentTime = Date.parse(new Date());
+            const deadline = new Date(currentTime + timeInSeconds * 1000);
             // const timer = [];
             //buidling hint section
             const hint = [];
@@ -162,29 +154,31 @@ function buildQuiz() {
                         ${currentQuestion.answers[letter]}
                          </label>`
                 );
+                console.log(letter);
             }
             // add hint section
             hint.push(
                 `<p>${currentQuestion.hint}</p>`
-            );
-
-            console.log(hint);
+            )
             // add question and answers to the output
             output.push(
                 `<div class="slide">
-                    <div class="question"> ${currentQuestion.question} </div>
-                    <div class="timeLeft"> <i class="fas fa-stopwatch"></i> Time remaining: <span class="seconds"></span> seconds </div>
-                    <div class="deadline" hidden> ${currentQuestion.hint} </div>
-                    <br>
-                    <div class="answers"> ${answers.join("")} </div>
-                    </div>`
+                <div class="question"> ${currentQuestion.question} </div>
+                <div class="deadline" hidden> ${currentQuestion.hint} </div>
+                <br>
+                <div class="answers"> ${answers.join("")} </div>
+                </div>`
             );
+            // add each timer
         }
     );
 
     //combine into a string
     quizContainer.innerHTML = output.join("");
 }
+//display time remaining
+// getTimeRemaining(deadline).seconds;
+// initTimer('timerdiv', deadline);
 
 function showResults() {
 
@@ -224,8 +218,19 @@ function showResults() {
 }
 
 function showNextSlide() {
+    //track timer
+    let timeInSeconds = 15;
+    const currentTime = Date.parse(new Date());
+    const deadline = new Date(currentTime + timeInSeconds * 1000);
     showSlide(currentSlide + 1);
-    setTimeout(showNextSlide, 15000);
+    if (currentSlide === myQuestions.length - 1) {
+        showResults();
+    } else {
+        setTimeout(showNextSlide, 15000);
+        getTimeRemaining(deadline).seconds;
+        console.log(getTimeRemaining(deadline).seconds);
+        initTimer('timerdiv', deadline);
+    };
 }
 
 function showPreviousSlide() {
