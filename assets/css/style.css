@@ -25,6 +25,9 @@ h1{
   font-size: 30px;
   margin-bottom: 10px;
 }
+.quiz-container{
+  position: relative;
+}
 .answers {
   margin-bottom: 20px;
   text-align: left;

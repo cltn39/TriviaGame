@@ -51,7 +51,8 @@ const myQuestions = [
         },
         correctAnswer: "d",
         timeLeft: 15
-    }
+    },
+    {}
 ];
 //track what buttons do
 const startBtn = document.getElementById("start")
@@ -72,7 +73,6 @@ const instructionContainer = document.getElementById("deadline")
 function getTimeRemaining(timeEnd) {
     let t = Date.parse(timeEnd) - Date.parse(new Date());
     const seconds = Math.floor((t / 1000));
-    console.log(t);
     return {
         "total": t,
         "seconds": seconds
@@ -103,7 +103,7 @@ function showSlide(n) {
     currentSlide = n;
 
     if (currentSlide === 0) {
-        hintBtn.style.display = "inline-block";
+        hintBtn.style.display = "none";
         nextBtn.style.display = "none";
     } else {
         hintBtn.style.display = "inline-block";
@@ -117,28 +117,19 @@ function showSlide(n) {
     } else {
         submitBtn.style.display = "none";
     }
-    console.log(currentSlide);
 }
-
-console.log(getTimeRemaining(deadline).seconds);
 
 function buildQuiz() {
     // track where output go to
     const output = [];
 
-    console.log(output);
-
     // for each question
-    myQuestions.map(
+    myQuestions.forEach(
         (currentQuestion, questionIndex) => {
             console.log(currentQuestion);
             console.log(questionIndex);
             // building answers array
             const answers = [];
-            //building timer
-            let timeInSeconds = currentQuestion.timeLeft;
-            const currentTime = Date.parse(new Date());
-            const deadline = new Date(currentTime + timeInSeconds * 1000);
             //buidling hint section
             const hint = [];
             // build each questions
@@ -153,7 +144,6 @@ function buildQuiz() {
                         ${currentQuestion.answers[letter]}
                          </label>`
                 );
-                console.log(letter);
             }
             // add hint section
             hint.push(
@@ -185,11 +175,12 @@ function showResults() {
     let numCorrect = 0;
 
     // for each question...
-    myQuestions.map((currentQuestion, questionIndex) => {
+    myQuestions.forEach((currentQuestion, questionIndex) => {
 
         // find selected answer
         const answerContainer = answerContainers[questionIndex];
-        const selector = 'input:checked';
+        console.log(answerContainer);
+        const selector = "input:checked";
         const userAnswer = (answerContainer.querySelector(selector) || {}).value;
 
         // if answer is correct
@@ -198,12 +189,12 @@ function showResults() {
             numCorrect++;
 
             // color the answers green
-            answerContainers[questionIndex].style.color = 'lightgreen';
+            answerContainers[questionIndex].style.color = "lightgreen";
         }
         // if answer is wrong or blank
         else {
             // color the answers red
-            answerContainers[questionIndex].style.color = 'red';
+            answerContainers[questionIndex].style.color = "red";
         }
     });
     //out of question variable
@@ -211,6 +202,14 @@ function showResults() {
     let leftOutOf = numCorrect - 1;
     // print correct answers out of all questions
     resultsContainer.innerHTML = leftOutOf + " out of " + rightOutOf;
+    // show all the past quizzes
+    const quizFormat = document.getElementsByClassName("slide")
+    console.log(quizFormat[1]);
+    for (i=0; i<quizFormat.length; i++) {
+        quizFormat[i].style.position = "relative"
+        quizFormat[i].style.opacity = "1"
+
+    };
 }
 
 function showNextSlide() {
@@ -219,26 +218,26 @@ function showNextSlide() {
     const currentTime = Date.parse(new Date());
     const deadline = new Date(currentTime + timeInSeconds * 1000);
     showSlide(currentSlide + 1);
-    if (currentSlide === myQuestions.length - 1) {
+    if (currentSlide === myQuestions.length -1) {
         showResults();
     } else {
         setTimeout(showNextSlide, 15000);
         getTimeRemaining(deadline).seconds;
         console.log(getTimeRemaining(deadline).seconds);
-        initTimer('timerdiv', deadline);
+        initTimer("timerdiv", deadline);
     };
 }
 
 function showHint() {
     var myHint = document.getElementsByClassName("hint");
-  console.log(myHint);
-  for (i=0; i< myHint.length; i++) {  
-  if (myHint[i].hidden === true) {
-    myHint[i].hidden = false;
-  } else {
-    myHint[i].hidden = true;
-  }
-}}
+    for (i = 0; i < myHint.length; i++) {
+        if (myHint[i].hidden === true) {
+            myHint[i].hidden = false;
+        } else {
+            myHint[i].hidden = true;
+        }
+    }
+}
 //display quiz right away
 buildQuiz();
 
@@ -255,3 +254,4 @@ startBtn.addEventListener("click", showNextSlide);
 hintBtn.addEventListener("click", showHint);
 nextBtn.addEventListener("click", showNextSlide);
 submitBtn.addEventListener("click", showResults);
+submitBtn.addEventListener("click", showNextSlide);
