@@ -106,7 +106,7 @@ function showSlide(n) {
     // show the new slide by adding the active-slide class
     slides[n].classList.add("active-slide");
     currentSlide = n;
-
+    
     if (currentSlide === 0) {
         previousBtn.style.display = "none";
         nextBtn.style.display = "none";
@@ -115,7 +115,7 @@ function showSlide(n) {
         nextBtn.style.display = "inline-block";
         startBtn.style.display = "none";
     }
-
+    
     if (currentSlide === slides.length - 1) {
         nextBtn.style.display = "none";
         submitBtn.style.display = "inline-block";
@@ -124,6 +124,15 @@ function showSlide(n) {
     }
     console.log(currentSlide);
 }
+
+//display time remaining
+getTimeRemaining(deadline).seconds;
+initTimer('timerdiv', deadline);
+
+console.log(getTimeRemaining(deadline).seconds);
+
+
+setTimeout(showNextSlide, 15000);
 
 function buildQuiz() {
     // track where output go to
@@ -164,8 +173,8 @@ function buildQuiz() {
             output.push(
                 `<div class="slide">
                     <div class="question"> ${currentQuestion.question} </div>
-                    <div class="timeLeft"> ${currentQuestion.timeLeft} </div>
-                    <div class="deadline"> ${currentQuestion.hint} </div>
+                    <div class="timeLeft"> <i class="fas fa-stopwatch"></i> Time remaining: <span class="seconds"></span> seconds </div>
+                    <div class="deadline" hidden> ${currentQuestion.hint} </div>
                     <br>
                     <div class="answers"> ${answers.join("")} </div>
                     </div>`
@@ -238,12 +247,3 @@ startBtn.addEventListener("click", showNextSlide);
 previousBtn.addEventListener("click", showPreviousSlide);
 nextBtn.addEventListener("click", showNextSlide);
 submitBtn.addEventListener("click", showResults);
-
-//display time remaining
-getTimeRemaining(deadline).seconds;
-
-console.log(getTimeRemaining(deadline).seconds);
-
-initTimer('timerdiv', deadline);
-
-setTimeout(showNextSlide, 15000);
