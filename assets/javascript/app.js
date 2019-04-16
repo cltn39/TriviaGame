@@ -57,7 +57,7 @@ const myQuestions = [
 const startBtn = document.getElementById("start")
 const submitBtn = document.getElementById("submit");
 const nextBtn = document.getElementById("next");
-const previousBtn = document.getElementById("previous");
+const hintBtn = document.getElementById("hint");
 //track where quizzes print 
 const quizContainer = document.getElementById("quiz");
 //track where results print
@@ -103,11 +103,11 @@ function showSlide(n) {
     currentSlide = n;
 
     if (currentSlide === 0) {
-        previousBtn.style.display = "none";
+        hintBtn.style.display = "inline-block";
         nextBtn.style.display = "none";
     } else {
-        previousBtn.style.display = "none";
-        nextBtn.style.display = "inline-block";
+        hintBtn.style.display = "inline-block";
+        nextBtn.style.display = "none";
         startBtn.style.display = "none";
     }
 
@@ -139,7 +139,6 @@ function buildQuiz() {
             let timeInSeconds = currentQuestion.timeLeft;
             const currentTime = Date.parse(new Date());
             const deadline = new Date(currentTime + timeInSeconds * 1000);
-            // const timer = [];
             //buidling hint section
             const hint = [];
             // build each questions
@@ -164,7 +163,7 @@ function buildQuiz() {
             output.push(
                 `<div class="slide">
                 <div class="question"> ${currentQuestion.question} </div>
-                <div class="deadline" hidden> ${currentQuestion.hint} </div>
+                <div class="hint" hidden> ${currentQuestion.hint} </div>
                 <br>
                 <div class="answers"> ${answers.join("")} </div>
                 </div>`
@@ -176,9 +175,6 @@ function buildQuiz() {
     //combine into a string
     quizContainer.innerHTML = output.join("");
 }
-//display time remaining
-// getTimeRemaining(deadline).seconds;
-// initTimer('timerdiv', deadline);
 
 function showResults() {
 
@@ -233,9 +229,16 @@ function showNextSlide() {
     };
 }
 
-function showPreviousSlide() {
-    showSlide(currentSlide - 1);
-}
+function showHint() {
+    var myHint = document.getElementsByClassName("hint");
+  console.log(myHint);
+  for (i=0; i< myHint.length; i++) {  
+  if (myHint[i].hidden === true) {
+    myHint[i].hidden = false;
+  } else {
+    myHint[i].hidden = true;
+  }
+}}
 //display quiz right away
 buildQuiz();
 
@@ -249,6 +252,6 @@ showSlide(0);
 
 //button event on click
 startBtn.addEventListener("click", showNextSlide);
-previousBtn.addEventListener("click", showPreviousSlide);
+hintBtn.addEventListener("click", showHint);
 nextBtn.addEventListener("click", showNextSlide);
 submitBtn.addEventListener("click", showResults);
