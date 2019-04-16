@@ -4,15 +4,21 @@
     const currentTime = Date.parse(new Date());
     const deadline = new Date(currentTime + timeInSeconds * 1000);
     //track what buttons do
-    const submitBtn = document.getElementById('submit');
+    const startBtn = document.getElementById("start")
+    const submitBtn = document.getElementById("submit");
     const nextBtn = document.getElementById("next");
     const previousBtn = document.getElementById("previous");
     //track where quizzes print 
-    const quizContainer = document.getElementById('quiz');
+    const quizContainer = document.getElementById("quiz");
     //track where results print
-    const resultsContainer = document.getElementById('results');
+    const resultsContainer = document.getElementById("results");
+    //track where timers print
+    const timerContainer = document.getElementById("deadline")
     //track multiple quizzes
     const myQuestions = [
+        { question: "Are you ready for some Trivia Quiz?",
+          instruction: "Press Start button to start",
+        },
         {
             question: "Question 1",
             answers: {
@@ -91,15 +97,17 @@
 
         if (currentSlide === 0) {
             previousBtn.style.display = "none";
+            nextBtn.style.display = "none";
         } else {
-            previousBtn.style.display = "inline-block";
+            previousBtn.style.display = "none";
+            nextBtn.style.display = "inline-block";
+            startBtn.style.display ="none";
         }
 
         if (currentSlide === slides.length - 1) {
             nextBtn.style.display = "none";
             submitBtn.style.display = "inline-block";
         } else {
-            nextBtn.style.display = "inline-block";
             submitBtn.style.display = "none";
         }
         console.log(currentSlide);
@@ -176,9 +184,11 @@
                 answerContainers[questionIndex].style.color = 'red';
             }
         });
-
+        //out of question variable
+        let rightOutOf = myQuestions.length-1;
+        let leftOutOf = numCorrect-1;
         // print correct answers out of all questions
-        resultsContainer.innerHTML = numCorrect + " out of " + myQuestions.length;
+        resultsContainer.innerHTML = leftOutOf + " out of " + rightOutOf;
     }
 
     function showNextSlide() {
@@ -201,6 +211,7 @@
     showSlide(0);
 
     //button event on click
+    startBtn.addEventListener("click", showNextSlide);
     previousBtn.addEventListener("click", showPreviousSlide);
     nextBtn.addEventListener("click", showNextSlide);
     submitBtn.addEventListener("click", showResults);
